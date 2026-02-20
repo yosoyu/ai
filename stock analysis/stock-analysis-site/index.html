@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Investment Analysis Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #030712;
+      --bg-secondary: #0f172a;
+      --bg-card: #1e293b;
+      --bg-elevated: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --accent-buy: #10b981;
+      --accent-buy-glow: rgba(16, 185, 129, 0.3);
+      --accent-avoid: #ef4444;
+      --accent-avoid-glow: rgba(239, 68, 68, 0.3);
+      --accent-gold: #f59e0b;
+      --accent-blue: #3b82f6;
+      --border-color: #334155;
+      --grid-color: rgba(51, 65, 85, 0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .grid-background {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 50px 50px;
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .grid-background::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
+                  radial-gradient(ellipse at 80% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+                  radial-gradient(ellipse at 20% 80%, rgba(239, 68, 68, 0.05) 0%, transparent 40%);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 40px;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo-section { display: flex; align-items: center; gap: 16px; }
+
+    .logo-icon {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-gold));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 20px;
+      color: var(--bg-primary);
+    }
+
+    .logo-text h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .header-meta { display: flex; align-items: center; gap: 24px; }
+
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .live-dot {
+      width: 8px; height: 8px;
+      background: var(--accent-buy);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--accent-buy-glow); }
+      50% { opacity: 0.7; box-shadow: 0 0 0 8px transparent; }
+    }
+
+    .timestamp {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 32px;
+      background: var(--bg-secondary);
+      padding: 6px;
+      border-radius: 12px;
+      width: fit-content;
+      flex-wrap: wrap;
+    }
+
+    .nav-tab {
+      padding: 12px 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-primary);
+      background: var(--bg-elevated);
+    }
+
+    .nav-tab.active {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-header h2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-header::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-color), transparent);
+    }
+
+    .stock-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stock-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .stock-card:hover { transform: translateY(-4px); }
+    .stock-card.buy:hover { box-shadow: 0 12px 40px var(--accent-buy-glow); }
+    .stock-card.avoid:hover { box-shadow: 0 12px 40px var(--accent-avoid-glow); }
+    .stock-card.hold:hover { box-shadow: 0 12px 40px rgba(245, 158, 11, 0.2); }
+
+    .stock-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+
+    .stock-card.buy::before { background: linear-gradient(90deg, var(--accent-buy), transparent); }
+    .stock-card.avoid::before { background: linear-gradient(90deg, var(--accent-avoid), transparent); }
+    .stock-card.hold::before { background: linear-gradient(90deg, var(--accent-gold), transparent); }
+    .stock-card.hold { border-color: var(--accent-gold); }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .stock-info h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .stock-info .ticker {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--bg-elevated);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .recommendation-badge {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .recommendation-badge.buy {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-buy);
+      border: 1px solid var(--accent-buy);
+    }
+
+    .recommendation-badge.avoid {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--accent-avoid);
+      border: 1px solid var(--accent-avoid);
+    }
+
+    .recommendation-badge.hold {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-gold);
+      border: 1px solid var(--accent-gold);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .metric-item {
+      background: var(--bg-card);
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .metric-value.positive { color: var(--accent-buy); }
+    .metric-value.negative { color: var(--accent-avoid); }
+    .metric-value.gold { color: var(--accent-gold); }
+
+    .card-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .highlight-tag {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .highlight-tag.positive {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-buy);
+    }
+
+    .highlight-tag.negative {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--accent-avoid);
+    }
+
+    .source-link {
+      font-size: 10px;
+      color: var(--accent-blue);
+      text-decoration: none;
+      margin-left: 4px;
+    }
+
+    .source-link:hover {
+      text-decoration: underline;
+    }
+
+    .source-hint {
+      font-size: 10px;
+      color: var(--text-muted);
+      cursor: help;
+      margin-left: 4px;
+    }
+
+    .card-link {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--accent-blue);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .data-sources {
+      margin-top: 32px;
+      padding: 16px;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+    }
+
+    .data-sources h3 {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .data-sources ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .data-sources li {
+      font-size: 11px;
+    }
+
+    .data-sources a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    .data-sources a:hover {
+      text-decoration: underline;
+    }
+
+    .comparison-section { margin-bottom: 48px; }
+
+    .comparison-table {
+      width: 100%;
+      background: var(--bg-secondary);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      overflow-x: auto;
+    }
+
+    .comparison-table table { width: 100%; border-collapse: collapse; }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    .comparison-table th {
+      background: var(--bg-card);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+
+    .comparison-table td { font-size: 13px; }
+
+    .comparison-table tr:last-child td { border-bottom: none; }
+
+    .comparison-table .buy-col { color: var(--accent-buy); }
+    .comparison-table .avoid-col { color: var(--accent-avoid); }
+    .comparison-table .winner { background: rgba(16, 185, 129, 0.05); }
+    .comparison-table .positive { color: var(--accent-buy); }
+
+    .analysis-section { display: none; }
+    .analysis-section.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      margin-top: 64px;
+      padding: 32px 0;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .disclaimer {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer-meta {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 768px) {
+      .stock-cards { grid-template-columns: 1fr; }
+      .header-content { flex-direction: column; align-items: flex-start; }
+      .nav-tabs { width: 100%; overflow-x: auto; }
+      .comparison-table { font-size: 11px; }
+      .comparison-table th, .comparison-table td { padding: 8px; }
+    }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="grid-background"></div>
+
+  <div class="container">
+    <header>
+      <div class="header-content">
+        <div class="logo-section">
+          <div class="logo-icon">IA</div>
+          <div class="logo-text">
+            <h1>Investment Analysis</h1>
+            <span>Hong Kong & US Equities Research</span>
+          </div>
+        </div>
+        <div class="header-meta">
+          <div class="live-indicator">
+            <div class="live-dot"></div>
+            <span>8 Stocks Analyzed</span>
+          </div>
+          <div class="timestamp" id="last-updated">Loading...</div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="overview">Overview</button>
+      <button class="nav-tab" data-tab="buy">Buy (3)</button>
+      <button class="nav-tab" data-tab="hold">Hold (2)</button>
+      <button class="nav-tab" data-tab="avoid">Avoid (3)</button>
+    </nav>
+
+    <!-- Overview Section -->
+    <section id="overview" class="analysis-section active">
+      <div class="section-header">
+        <h2>All Stocks Summary</h2>
+      </div>
+
+      <div class="stock-cards" id="all-stocks-grid"></div>
+
+      <div class="comparison-section">
+        <div class="section-header">
+          <h2>Comparison Table</h2>
+        </div>
+        <div class="comparison-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Stock</th>
+                <th>Rec</th>
+                <th>Rating</th>
+                <th>Price</th>
+                <th>P/B</th>
+                <th>ROE</th>
+                <th>MoS</th>
+                <th>Main Risk</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="data-sources">
+        <h3>Data Sources</h3>
+        <ul>
+          <li><a href="https://finance.yahoo.com" target="_blank">Yahoo Finance</a> - Real-time prices, P/E, P/B, ROE, 52W ranges</li>
+          <li><a href="https://www1.hkexnews.hk" target="_blank">HKEX News</a> - Annual reports, announcements</li>
+          <li><a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany" target="_blank">SEC EDGAR</a> - US company filings (CoreWeave)</li>
+          <li><a href="https://pss-system.cponline.cnipa.gov.cn" target="_blank">CNIPA</a> - Chinese patent database</li>
+          <li><a href="https://www.nmpa.gov.cn" target="_blank">NMPA</a> - Chinese drug regulatory</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Buy Section -->
+    <section id="buy" class="analysis-section">
+      <div class="section-header">
+        <h2>Buy Recommendations (3 Stocks)</h2>
+      </div>
+      <div class="stock-cards" id="buy-grid"></div>
+    </section>
+
+    <!-- Hold Section -->
+    <section id="hold" class="analysis-section">
+      <div class="section-header">
+        <h2>Hold/Speculative (2 Stocks)</h2>
+      </div>
+      <div class="stock-cards" id="hold-grid"></div>
+    </section>
+
+    <!-- Avoid Section -->
+    <section id="avoid" class="analysis-section">
+      <div class="section-header">
+        <h2>Avoid Recommendations (3 Stocks)</h2>
+      </div>
+      <div class="stock-cards" id="avoid-grid"></div>
+    </section>
+
+    <footer>
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> This analysis is for educational and informational purposes only. It does not constitute investment advice. Always conduct your own due diligence and consult with a licensed financial advisor before making investment decisions.
+      </div>
+      <div class="footer-meta">
+        <span>Framework v1.0</span>
+        <span id="footer-date">Loading...</span>
+        <span>8 Stocks Analyzed</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Stock Data (Live prices fetched: 2026-02-20)
+    const stocks = [
+      {
+        id: 'tencent',
+        ticker: '700.HK',
+        name: 'Tencent Holdings',
+        price: 521.0,
+        currency: 'HK$',
+        recommendation: 'buy',
+        rating: 8.2,
+        pe: 20.70,
+        pb: 3.57,
+        roe: '19.8%',
+        marginOfSafety: '18.5%',
+        dividend: '0.84%',
+        target: 'HK$650',
+        highlights: ['WeChat Ecosystem', '30% Margin', 'HK$130B FCF'],
+        risk: 'AI Competition',
+        riskColor: 'gold',
+        positiveHighlights: ['WeChat Ecosystem', '30% Margin'],
+        negativeHighlights: []
+      },
+      {
+        id: 'alibaba',
+        ticker: '9988.HK',
+        name: 'Alibaba Group',
+        price: 148.8,
+        currency: 'HK$',
+        recommendation: 'buy',
+        rating: 7.8,
+        pe: 20.08,
+        pb: 0.30,
+        roe: '11.2%',
+        marginOfSafety: '31.4%',
+        dividend: '0.67%',
+        target: 'HK$220',
+        highlights: ['Deep Value', 'Cloud Leader', '+76% Profit'],
+        risk: 'Competition',
+        riskColor: 'gold',
+        positiveHighlights: ['P/B 0.30x', 'Cloud Leader'],
+        negativeHighlights: []
+      },
+      {
+        id: 'kerry',
+        ticker: '683.HK',
+        name: 'Kerry Properties',
+        price: 25.58,
+        currency: 'HK$',
+        recommendation: 'buy',
+        rating: 7.7,
+        pe: 58.1,
+        pb: 0.36,
+        roe: '0.95%',
+        marginOfSafety: '44.3%',
+        dividend: '5.3%',
+        target: 'HK$46',
+        highlights: ['Deep Value', 'Kuok Family', 'Quality Assets'],
+        risk: 'Cyclical',
+        riskColor: 'normal',
+        positiveHighlights: ['P/B 0.36x', 'Kuok Family'],
+        negativeHighlights: []
+      },
+      {
+        id: 'cmcdi',
+        ticker: '133.HK',
+        name: 'China Merchants CDI',
+        price: 15.25,
+        currency: 'HK$',
+        recommendation: 'hold',
+        rating: 6.6,
+        pe: 1.48,
+        pb: 0.38,
+        roe: '29.0%',
+        marginOfSafety: '40.4%',
+        dividend: '4.15%',
+        target: 'HK$26',
+        highlights: ['62% NAV Discount', 'Governance Win', 'CMB Holdings'],
+        risk: 'Fee Drag',
+        riskColor: 'gold',
+        positiveHighlights: ['P/NAV 0.38x', 'NAV HK$40'],
+        negativeHighlights: ['Value Trap Risk']
+      },
+      {
+        id: 'trip',
+        ticker: '9961.HK',
+        name: 'Trip.com Group',
+        price: 417.8,
+        currency: 'HK$',
+        recommendation: 'hold',
+        rating: 6.5,
+        pe: 14.24,
+        pb: 1.44,
+        roe: '20.2%',
+        marginOfSafety: '-',
+        dividend: '0.56%',
+        target: 'HK$550',
+        highlights: ['52% Margin', 'Market Leader', 'Antitrust Probe'],
+        risk: 'Antitrust',
+        riskColor: 'avoid',
+        positiveHighlights: ['52% Margin', '20% ROE'],
+        negativeHighlights: ['Antitrust Probe']
+      },
+      {
+        id: 'meituan',
+        ticker: '3690.HK',
+        name: 'Meituan',
+        price: 80.6,
+        currency: 'HK$',
+        recommendation: 'avoid',
+        rating: 5.55,
+        pe: 15.18,
+        pb: 2.49,
+        roe: '-1.2%',
+        marginOfSafety: '-',
+        dividend: '0%',
+        target: '-',
+        highlights: ['Price War', 'Profit Collapse', '85%->55% Share'],
+        risk: 'Competition',
+        riskColor: 'avoid',
+        positiveHighlights: ['HK$141B Cash'],
+        negativeHighlights: ['Price War', '-RMB240B Loss']
+      },
+      {
+        id: 'golden',
+        ticker: '6896.HK',
+        name: 'Golden Throat',
+        price: 3.18,
+        currency: 'HK$',
+        recommendation: 'avoid',
+        rating: 5.25,
+        pe: 7.76,
+        pb: 1.72,
+        roe: '21.5%',
+        marginOfSafety: '26%',
+        dividend: '15.7%*',
+        target: '-',
+        highlights: ['Governance Risk', '126% Payout', 'Info Opacity'],
+        risk: 'Governance',
+        riskColor: 'avoid',
+        positiveHighlights: ['21.5% ROE'],
+        negativeHighlights: ['Governance Risk', '126% Payout']
+      },
+      {
+        id: 'coreweave',
+        ticker: 'CRWV',
+        name: 'CoreWeave',
+        price: 97.14,
+        currency: '$',
+        recommendation: 'avoid',
+        rating: 4.25,
+        pe: null,
+        pb: 12.46,
+        roe: '-29.2%',
+        marginOfSafety: '-',
+        dividend: '0%',
+        target: '-',
+        highlights: ['Bankruptcy Risk', '485% D/E', '3-4mo Cash'],
+        risk: 'Liquidity',
+        riskColor: 'avoid',
+        positiveHighlights: ['+276% Growth'],
+        negativeHighlights: ['485% D/E', '-$825M Net Income', '3-4mo Runway']
+      }
+    ];
+
+    // Generate stock card HTML
+    function generateCard(stock) {
+      const recClass = stock.recommendation === 'buy' ? 'buy' :
+                       stock.recommendation === 'avoid' ? 'avoid' : 'hold';
+      const recText = stock.recommendation === 'buy' ? 'Buy' :
+                      stock.recommendation === 'avoid' ? 'Avoid' :
+                      stock.id === 'cmcdi' ? 'Spec Buy' : 'Hold';
+
+      const highlightTags = [
+        ...stock.positiveHighlights.map(h => `<span class="highlight-tag positive">${h}</span>`),
+        ...stock.negativeHighlights.map(h => `<span class="highlight-tag negative">${h}</span>`)
+      ].join('');
+
+      // Link to subpage - extract ticker number (e.g., "700" from "700.HK")
+      const tickerNum = stock.ticker.replace('.HK', '');
+      const subpage = `stocks/${tickerNum}.html`;
+
+      // Yahoo Finance link format
+      const yahooTicker = stock.ticker === 'CRWV' ? 'CRWV' : '0' + tickerNum + '.HK';
+
+      return `
+        <div class="stock-card ${recClass}" onclick="window.location.href='${subpage}'">
+          <div class="card-header">
+            <div class="stock-info">
+              <h3>${stock.name}</h3>
+              <span class="ticker">${stock.ticker}</span>
+            </div>
+            <div class="recommendation-badge ${recClass}">${recText}</div>
+          </div>
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <div class="metric-label">Price <a href="https://finance.yahoo.com/quote/${yahooTicker}" target="_blank" class="source-link" onclick="event.stopPropagation()">↗</a></div>
+              <div class="metric-value">${stock.currency}${stock.price.toFixed(2)}</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-label">P/B <span class="source-hint" title="Source: Yahoo Finance">ℹ</span></div>
+              <div class="metric-value ${stock.pb < 1 ? 'positive' : ''}">${stock.pb.toFixed(2)}x</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-label">ROE <span class="source-hint" title="Source: Yahoo Finance">ℹ</span></div>
+              <div class="metric-value ${parseFloat(stock.roe) > 15 ? 'gold' : ''}">${stock.roe}</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-label">Rating</div>
+              <div class="metric-value ${stock.rating >= 7 ? 'positive' : stock.rating < 6 ? 'negative' : 'gold'}">${stock.rating}/10</div>
+            </div>
+          </div>
+          <div class="card-highlights">${highlightTags}</div>
+          <div class="card-link">View Details →</div>
+        </div>
+      `;
+    }
+
+    // Generate comparison row
+    function generateRow(stock) {
+      const recClass = stock.recommendation === 'buy' ? 'buy-col' :
+                       stock.recommendation === 'avoid' ? 'avoid-col' : '';
+      const recText = stock.recommendation === 'buy' ? 'BUY' :
+                      stock.recommendation === 'avoid' ? 'AVOID' :
+                      stock.id === 'cmcdi' ? 'SPEC' : 'HOLD';
+      const isWinner = stock.recommendation === 'buy';
+
+      return `
+        <tr class="${isWinner ? 'winner' : ''}">
+          <td class="${recClass}"><strong>${stock.ticker} ${stock.name.split(' ')[0]}</strong></td>
+          <td class="${recClass}">${recText}</td>
+          <td>${stock.rating}/10</td>
+          <td>${stock.currency}${stock.price.toFixed(2)}</td>
+          <td class="${stock.pb < 1 ? 'positive' : ''}">${stock.pb.toFixed(2)}x</td>
+          <td>${stock.roe}</td>
+          <td>${stock.marginOfSafety}</td>
+          <td style="color: var(--accent-${stock.riskColor === 'avoid' ? 'avoid' : stock.riskColor === 'gold' ? 'gold' : 'text-secondary'})">${stock.risk}</td>
+        </tr>
+      `;
+    }
+
+    // Render all sections
+    function render() {
+      // Sort by rating for comparison table
+      const sorted = [...stocks].sort((a, b) => b.rating - a.rating);
+
+      // All stocks grid
+      document.getElementById('all-stocks-grid').innerHTML = sorted.map(generateCard).join('');
+
+      // Comparison table
+      document.getElementById('comparison-body').innerHTML = sorted.map(generateRow).join('');
+
+      // Filtered grids
+      const buyStocks = stocks.filter(s => s.recommendation === 'buy').sort((a, b) => b.rating - a.rating);
+      const holdStocks = stocks.filter(s => s.recommendation === 'hold').sort((a, b) => b.rating - a.rating);
+      const avoidStocks = stocks.filter(s => s.recommendation === 'avoid').sort((a, b) => b.rating - a.rating);
+
+      document.getElementById('buy-grid').innerHTML = buyStocks.map(generateCard).join('');
+      document.getElementById('hold-grid').innerHTML = holdStocks.map(generateCard).join('');
+      document.getElementById('avoid-grid').innerHTML = avoidStocks.map(generateCard).join('');
+    }
+
+    // Tab Navigation
+    const tabs = document.querySelectorAll('.nav-tab');
+    const sections = document.querySelectorAll('.analysis-section');
+
+    function switchTab(tabName) {
+      tabs.forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.tab === tabName);
+      });
+      sections.forEach(section => {
+        section.classList.toggle('active', section.id === tabName);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+    });
+
+    // Initialize
+    function init() {
+      render();
+      const now = new Date();
+      document.getElementById('last-updated').textContent = `Updated: ${now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}`;
+      document.getElementById('footer-date').textContent = `Completed: ${now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+    }
+
+    init();
+  </script>
+</body>
+</html>

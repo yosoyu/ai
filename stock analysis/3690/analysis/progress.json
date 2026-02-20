@@ -1,0 +1,31 @@
+{
+  "stock": "3690.HK",
+  "company": "Meituan (美团)",
+  "start_date": "2026-02-20",
+  "completion_date": "2026-02-20",
+  "phases": {
+    "phase1": {"status": "completed", "completed_date": "2026-02-20", "file": "phase1_data_collection.md"},
+    "phase2": {"status": "completed", "completed_date": "2026-02-20", "file": "phase2_fundamental_analysis.md"},
+    "phase3": {"status": "completed", "completed_date": "2026-02-20", "file": "phase3_risk_assessment.md"},
+    "phase4": {"status": "completed", "completed_date": "2026-02-20", "file": "phase4_investment_decision.md"},
+    "phase5": {"status": "completed", "completed_date": "2026-02-20", "file": "phase5_final_report.md"}
+  },
+  "recommendation": "HOLD / AVOID",
+  "rating": "5.55/10 - High Uncertainty",
+  "current_price_hkd": 82.05,
+  "key_risks": [
+    "Massive profit warning (2025: +RMB 36B → -RMB 240B)",
+    "Intense price war with Alibaba, JD.com, Douyin",
+    "Market share erosion (85% → 55%)",
+    "Broken unit economics",
+    "Uncertain recovery timeline"
+  ],
+  "positive_factors": [
+    "Strong cash position (HK$141B)",
+    "Still dominant market position (50%+)",
+    "Quality management (Wang Xing)",
+    "Low P/S valuation (1.38x)"
+  ],
+  "suitable_for": "Risk-tolerant speculators only (max 1-2% position)",
+  "not_suitable_for": "Conservative investors, dividend investors, those needing certainty"
+}

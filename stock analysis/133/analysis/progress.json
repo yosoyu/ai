@@ -1,0 +1,39 @@
+{
+  "stock": "133.HK",
+  "company": "China Merchants China Direct Investments Limited",
+  "chinese_name": "招商局中国基金",
+  "start_date": "2026-02-20",
+  "completion_date": "2026-02-20",
+  "phases": {
+    "phase1": {"status": "completed", "completed_date": "2026-02-20", "file": "phase1_data_collection.md"},
+    "phase2": {"status": "completed", "completed_date": "2026-02-20", "file": "phase2_fundamental_analysis.md"},
+    "phase3": {"status": "completed", "completed_date": "2026-02-20", "file": "phase3_risk_assessment.md"},
+    "phase4": {"status": "completed", "completed_date": "2026-02-20", "file": "phase4_investment_decision.md"},
+    "phase5": {"status": "completed", "completed_date": "2026-02-20", "file": "phase5_final_report.md"}
+  },
+  "recommendation": "SPECULATIVE BUY",
+  "rating": "6.6/10 - Deep Value Play",
+  "intrinsic_value_hkd": 26.14,
+  "current_price_hkd": 15.58,
+  "nav_per_share_hkd": 34.48,
+  "price_to_nav": 0.45,
+  "discount_to_nav": "55%",
+  "margin_of_safety": "40.4%",
+  "key_risks": [
+    "NAV discount persistence (value trap risk)",
+    "Management fee uncertainty (only interim reduction)",
+    "Unlisted asset valuation uncertainty (27% of portfolio)",
+    "Portfolio concentration (CMB is 46%)",
+    "Illiquidity"
+  ],
+  "positive_factors": [
+    "Extreme discount to NAV (55%)",
+    "Quality holdings (CMB, UnionPay, iFlytek)",
+    "Historic governance victory (fee reduction)",
+    "4-8% dividend yield",
+    "40% margin of safety",
+    "Multiple catalysts (IPOs, fee reduction, privatization)"
+  ],
+  "suitable_for": "Active investors who can monitor quarterly, 3-5 year horizon",
+  "not_suitable_for": "Passive investors, those needing liquidity, risk-averse"
+}

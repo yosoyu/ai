@@ -1,0 +1,22 @@
+{
+  "stock": "[STOCK_CODE]",
+  "company": "[Company Name]",
+  "start_date": "[YYYY-MM-DD]",
+  "phases": {
+    "phase1": {"status": "pending", "completed_date": null, "file": "phase1_data_collection.md"},
+    "phase2": {"status": "pending", "completed_date": null, "file": "phase2_fundamental_analysis.md"},
+    "phase3": {"status": "pending", "completed_date": null, "file": "phase3_risk_assessment.md"},
+    "phase4": {"status": "pending", "completed_date": null, "file": "phase4_investment_decision.md"},
+    "phase5": {"status": "pending", "completed_date": null, "file": "phase5_final_report.md"}
+  },
+  "current_phase": 1,
+  "current_step": "1.1",
+  "key_findings": {
+    "critical_issues": [],
+    "positive_factors": [],
+    "intrinsic_value": null,
+    "margin_of_safety": null
+  },
+  "recommendation": null,
+  "rating": null
+}

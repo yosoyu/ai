@@ -1,0 +1,114 @@
+{
+  "stock": "700.HK",
+  "company": "Tencent Holdings Limited (腾讯控股)",
+  "analysis_date": "2026-02-20",
+  "completion_date": "2026-02-20",
+  "framework": "5-Phase Stock Analysis Framework",
+  "phases": {
+    "phase1": {
+      "status": "completed",
+      "completed_date": "2026-02-20",
+      "file": "phase1_data_collection.md",
+      "description": "Data collection from web sources and financial databases"
+    },
+    "phase2": {
+      "status": "completed",
+      "completed_date": "2026-02-20",
+      "file": "phase2_fundamental_analysis.md",
+      "description": "Business model, financials, competitive moat, and intrinsic value analysis"
+    },
+    "phase3": {
+      "status": "completed",
+      "completed_date": "2026-02-20",
+      "file": "phase3_risk_assessment.md",
+      "description": "Risk identification and Munger's 'Invert' analysis"
+    },
+    "phase4": {
+      "status": "completed",
+      "completed_date": "2026-02-20",
+      "file": "phase4_investment_decision.md",
+      "description": "Bull/bear cases, Buffett-Munger criteria, investment recommendation"
+    },
+    "phase5": {
+      "status": "completed",
+      "completed_date": "2026-02-20",
+      "file": "phase5_final_report.md",
+      "description": "Executive summary and final recommendation"
+    }
+  },
+  "recommendation": {
+    "rating": "8.2/10",
+    "action": "BUY",
+    "summary": "Quality Growth at Reasonable Price"
+  },
+  "valuation": {
+    "current_price_hkd": 533.00,
+    "intrinsic_value_hkd": 612.00,
+    "margin_of_safety": "15%",
+    "target_price_1y_hkd": 600,
+    "target_price_3y_hkd": 750,
+    "stop_loss_hkd": 400
+  },
+  "key_metrics": {
+    "market_cap_hkd": "4.85 trillion",
+    "pe_ratio": 21.8,
+    "pb_ratio": 3.63,
+    "roe": "19.8%",
+    "net_margin": "29.9%",
+    "dividend_yield": "0.84%",
+    "fcf_yield": "~5.5%"
+  },
+  "key_strengths": [
+    "Dominant WeChat ecosystem with 1.4B+ users",
+    "Best-in-class profitability (30% net margin)",
+    "Strong gaming franchise (#1 globally)",
+    "Net cash position (RMB 102B)",
+    "HK$100B+ annual shareholder returns"
+  ],
+  "key_risks": [
+    "AI competition from ByteDance (Doubao)",
+    "Regulatory environment in China",
+    "Gaming revenue concentration",
+    "China economic slowdown",
+    "Geopolitical tensions"
+  ],
+  "catalysts": [
+    "Yuanbao AI growth (50M DAU)",
+    "Video Account monetization acceleration",
+    "International gaming expansion",
+    "WeChat AI integration"
+  ],
+  "suitable_for": "Long-term growth investors (3-5 year horizon)",
+  "not_suitable_for": "Short-term traders, risk-averse investors, income-focused investors",
+  "position_sizing": {
+    "conservative": "3-5%",
+    "moderate": "5-8%",
+    "aggressive": "8-12%"
+  },
+  "buffett_munger_scorecard": {
+    "understandable_business": "9/10",
+    "favorable_prospects": "7/10",
+    "competent_management": "8/10",
+    "attractive_price": "7/10",
+    "durable_moat": "9/10",
+    "weighted_total": "7.9/10"
+  },
+  "scenario_analysis": {
+    "bull_case": {
+      "probability": "30%",
+      "target_hkd": 750,
+      "return": "+41%"
+    },
+    "base_case": {
+      "probability": "50%",
+      "target_hkd": 580,
+      "return": "+9%"
+    },
+    "bear_case": {
+      "probability": "20%",
+      "target_hkd": 350,
+      "return": "-34%"
+    },
+    "expected_value_hkd": 585
+  }
+}

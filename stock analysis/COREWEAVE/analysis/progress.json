@@ -1,0 +1,32 @@
+{
+  "stock": "CRWV",
+  "company": "CoreWeave, Inc.",
+  "start_date": "2026-02-20",
+  "completion_date": "2026-02-20",
+  "phases": {
+    "phase1": {"status": "completed", "completed_date": "2026-02-20", "file": "phase1_data_collection.md"},
+    "phase2": {"status": "completed", "completed_date": "2026-02-20", "file": "phase2_fundamental_analysis.md"},
+    "phase3": {"status": "completed", "completed_date": "2026-02-20", "file": "phase3_risk_assessment.md"},
+    "phase4": {"status": "completed", "completed_date": "2026-02-20", "file": "phase4_investment_decision.md"},
+    "phase5": {"status": "completed", "completed_date": "2026-02-20", "file": "phase5_final_report.md"}
+  },
+  "recommendation": "AVOID / SPECULATIVE ONLY",
+  "rating": "4.25/10 - Extreme Risk",
+  "current_price_usd": 97.14,
+  "key_risks": [
+    "Unprofitable (-$825M net income)",
+    "Extreme debt ($18.8B, 485% D/E)",
+    "Liquidity crisis risk (3-4 month cash runway)",
+    "Customer concentration (Microsoft 62-77%)",
+    "No competitive moat",
+    "100% NVIDIA dependency"
+  ],
+  "positive_factors": [
+    "Explosive revenue growth (+276% YoY)",
+    "$30B+ contract backlog",
+    "NVIDIA partnership (6% stake)",
+    "AI infrastructure tailwind"
+  ],
+  "suitable_for": "Aggressive speculators only (max 0.5-1% position)",
+  "not_suitable_for": "Conservative investors, value investors, those needing capital preservation"
+}

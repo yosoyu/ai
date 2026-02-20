@@ -1,0 +1,22 @@
+{
+  "stock": "TICKER",
+  "company": "COMPANY_NAME",
+  "start_date": "YYYY-MM-DD",
+  "phases": {
+    "phase1": {"status": "pending", "completed_date": null, "file": "phase1_data_collection.md"},
+    "phase2": {"status": "pending", "completed_date": null, "file": "phase2_fundamental_analysis.md"},
+    "phase3": {"status": "pending", "completed_date": null, "file": "phase3_risk_assessment.md"},
+    "phase4": {"status": "pending", "completed_date": null, "file": "phase4_investment_decision.md"},
+    "phase5": {"status": "pending", "completed_date": null, "file": "phase5_final_report.md"}
+  },
+  "current_phase": 1,
+  "recommendation": null,
+  "rating": null,
+  "intrinsic_value": null,
+  "current_price": null,
+  "margin_of_safety": null,
+  "key_risks": [],
+  "positive_factors": [],
+  "suitable_for": null,
+  "not_suitable_for": null
+}
