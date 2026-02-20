@@ -1,6 +1,7 @@
 {
   "stock": "683.HK",
   "company": "Kerry Properties Limited",
+  "chinese_name": "嘉里建设",
   "start_date": "2026-02-20",
   "completion_date": "2026-02-20",
   "last_verified": "2026-02-20",
@@ -12,35 +13,44 @@
     "phase5": {"status": "completed", "completed_date": "2026-02-20", "file": "phase5_final_report.md"}
   },
   "recommendation": "BUY",
-  "rating": "7.7/10 - Deep Value Play",
+  "rating": "7.9/10 - Deep Value Play (Verified)",
   "intrinsic_value_hkd": 45.89,
-  "current_price_hkd": 25.58,
-  "margin_of_safety": "44.3%",
-  "data_verification": {
-    "verified_price_hkd": 20.56,
-    "verified_pb_ratio": 0.29,
-    "verified_pe_ratio": 47,
-    "verified_dividend_yield": "6.5%",
-    "verification_date": "2026-02-20",
-    "discrepancies": [
+  "current_price_hkd": 20.56,
+  "margin_of_safety": "~55%",
+  "data_sources": {
+    "primary": {
+      "company_ir": "https://www.kerryprops.com",
+      "exchange_filings": "HKEX 00683 filings"
+    },
+    "secondary": {
+      "financial_portals": ["AASTOCKS", "Investing.com"]
+    },
+    "verification_status": {
+      "price": "verified",
+      "pb_ratio": "verified",
+      "dividend_yield": "verified",
+      "book_value": "verified"
+    },
+    "discrepancies_found": [
       "Price updated from HK$25.58 to verified HK$20.56",
-      "P/B verified at 0.29x (analysis showed 0.36x)",
-      "Dividend yield verified at 6.5% (analysis showed 5.3%)"
+      "P/B verified at 0.29x (analysis showed 0.36x) - EVEN CHEAPER",
+      "Dividend yield verified at 6.5% (analysis showed 5.3%) - HIGHER"
     ],
-    "sources": ["Web search financial portals", "HKEX filings"]
+    "verification_date": "2026-02-20"
   },
   "key_risks": [
-    "Office market oversupply",
-    "Cyclical earnings pressure",
-    "High debt (HK$61.8B)",
+    "Office market oversupply (HK vacancy ~15%)",
+    "Cyclical earnings pressure (ROE 0.95%)",
+    "High debt (HK$61.8B, D/E 52.3%)",
     "China property regulatory risk"
   ],
   "positive_factors": [
-    "Deep value (P/B 0.36x, 64% discount to book)",
-    "Quality assets in prime locations",
-    "Excellent management (Kuok family)",
-    "5.3% dividend yield",
-    "44% margin of safety"
+    "EXTREME deep value (P/B 0.29x, 71% discount to book)",
+    "Quality assets in prime locations (HK, Shanghai)",
+    "Excellent management (Kuok family, 65% ownership)",
+    "6.5% dividend yield (verified)",
+    "~55% margin of safety",
+    "Potential upside: +70% to +129%"
   ],
   "suitable_for": "Value investors with 3-5 year horizon",
   "not_suitable_for": "Short-term traders, risk-averse investors"

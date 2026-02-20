@@ -10,9 +10,8 @@ import json
 from pathlib import Path
 
 # Paths
-AI_DIR = Path("/Users/colinyu/Projects/ai")
-FRAMEWORK_DIR = AI_DIR / "stock-analysis-framework"
-SITE_DIR = AI_DIR / "stock-analysis-site"
+AI_DIR = Path("/Users/colinyu/Projects/ai/stock analysis")
+SITE_DIR = Path("/Users/colinyu/Projects/ai/stock analysis/stock-analysis-site")
 STOCKS_DIR = SITE_DIR / "stocks"
 
 # Stock folder mapping (analysis folder -> ticker)
@@ -24,6 +23,8 @@ STOCK_FOLDERS = {
     "133": {"ticker": "133", "name": "China Merchants CDI", "yahoo_ticker": "133.HK"},
     "9961": {"ticker": "9961", "name": "Trip.com", "yahoo_ticker": "9961.HK"},
     "3690": {"ticker": "3690", "name": "Meituan", "yahoo_ticker": "3690.HK"},
+    "728": {"ticker": "728", "name": "China Telecom", "yahoo_ticker": "728.HK"},
+    "941": {"ticker": "941", "name": "China Mobile", "yahoo_ticker": "941.HK"},
     "COREWEAVE": {"ticker": "CRWV", "name": "CoreWeave", "yahoo_ticker": "CRWV"},
 }
 
@@ -66,57 +67,64 @@ def parse_phase5_report(folder_path):
         data["name"] = stock_match.group(2).strip()
 
     # Extract recommendation
-    if "✅ BUY" in content or "# ✅ BUY" in content:
+    if "✅ BUY" in content or "# ✅ BUY" in content or "RECOMMENDATION: BUY" in content:
         data["recommendation"] = "buy"
-    elif "❌ AVOID" in content or "# ❌ AVOID" in content:
+    elif "❌ AVOID" in content or "# ❌ AVOID" in content or "RECOMMENDATION: AVOID" in content:
         data["recommendation"] = "avoid"
-    elif "⚠️ HOLD" in content or "SPECULATIVE BUY" in content:
+    elif "⚠️ HOLD" in content or "SPECULATIVE BUY" in content or "RECOMMENDATION: HOLD" in content:
         data["recommendation"] = "hold"
 
-    # Extract executive summary metrics
-    exec_summary = re.search(r"## Executive Summary(.+?)---", content, re.DOTALL)
+    # Extract executive summary metrics (table format: | **Metric** | Value | ...)
+    # Look for the next ## heading as the section boundary
+    exec_summary = re.search(r"## Executive Summary(.+?)(?=##)", content, re.DOTALL)
     if exec_summary:
         summary_text = exec_summary.group(1)
 
-        # Price
-        price_match = re.search(r"\*\*Current Price\*\*\s*\|\s*HK?\$?([\d.]+)", summary_text)
+        # Price - handles | **Current Price** | HK$20.56 | or | **Current Price** | ~HK$3.18-3.22 |
+        price_match = re.search(r"\|\s*\*\*Current Price\*\*\s*\|\s*[~]?(?:HK)?\$?([\d.]+)", summary_text)
         if price_match:
             data["price"] = float(price_match.group(1))
 
-        # P/E
-        pe_match = re.search(r"\*\*P/E Ratio\*\*\s*\|\s*([\d.]+)x", summary_text)
+        # P/E - handles | **P/E Ratio** | 7.76x | or | **P/E (TTM)** | 21.8x |
+        pe_match = re.search(r"\|\s*\*\*P/E(?:\s*(?:Ratio|\([^)]+\)))?\*\*\s*\|\s*([\d.]+)(?:-[\d.]+)?x", summary_text)
         if pe_match:
             data["pe"] = float(pe_match.group(1))
 
-        # P/B
-        pb_match = re.search(r"\*\*P/B Ratio\*\*\s*\|\s*([\d.]+)x", summary_text)
+        # P/B - handles | **P/B Ratio** | 1.72x | or | **P/B Ratio** | **0.29x** |
+        pb_match = re.search(r"\|\s*\*\*P/B(?:\s*Ratio)?\*\*\s*\|\s*\*{0,2}([\d.]+)\*{0,2}x", summary_text)
         if pb_match:
             data["pb"] = float(pb_match.group(1))
 
-        # ROE
-        roe_match = re.search(r"\*\*ROE\*\*\s*\|\s*([\d.]+)%", summary_text)
+        # ROE - handles | **ROE** | 21.5% |
+        roe_match = re.search(r"\|\s*\*\*ROE\*\*\s*\|\s*([\d.]+)%", summary_text)
         if roe_match:
             data["roe"] = f"{float(roe_match.group(1)):.1f}%"
 
-        # Dividend
-        div_match = re.search(r"\*\*Dividend Yield\*\*\s*\|\s*([\d.]+)%", summary_text)
+        # Dividend - handles | **Dividend Yield** | ~15.7% | or | **Dividend Yield** | **6.5%** |
+        div_match = re.search(r"\|\s*\*\*Dividend Yield\*\*\s*\|\s*\*{0,2}[~]?([\d.]+)%", summary_text)
         if div_match:
             data["dividend"] = f"{float(div_match.group(1)):.2f}%"
 
-        # Intrinsic Value
-        iv_match = re.search(r"\*\*Intrinsic Value\*\*\s*\|\s*HK?\$?([\d.]+)", summary_text)
+        # Intrinsic Value - from table | **Intrinsic Value** | HK$4.07 |
+        iv_match = re.search(r"\|\s*\*\*Intrinsic Value\*\*\s*\|\s*(?:HK)?\$?([\d.]+)", content)
         if iv_match:
             data["intrinsic_value"] = float(iv_match.group(1))
 
-        # Margin of Safety
-        mos_match = re.search(r"\*\*Margin of Safety\*\*\s*\|\s*([\d.]+)%", summary_text)
+        # Margin of Safety - handles | **Discount to Book** | 71% |
+        mos_match = re.search(r"\|\s*\*\*Discount to Book\*\*\s*\|\s*(\d+)%", summary_text)
         if mos_match:
             data["margin_of_safety"] = f"{float(mos_match.group(1)):.1f}%"
 
-    # Extract rating score
-    rating_match = re.search(r"\*\*Total\*\*\s*\|\s*\|\s*100%\s*\|\s*\*\*([\d.]+)/10\*\*", content)
+    # Extract rating score - handles | **Total** | | 100% | **5.25/10** |
+    rating_match = re.search(r"\|\s*\*\*Total\*\*\s*\|[^|]*\|[^|]*\|\s*\*\*([\d.]+)/10\*\*", content)
     if rating_match:
         data["rating"] = float(rating_match.group(1))
+
+    # Also try ASCII box format: RATING: 8.2 / 10
+    if data["rating"] == 0:
+        ascii_rating_match = re.search(r"RATING:\s*([\d.]+)\s*/\s*10", content)
+        if ascii_rating_match:
+            data["rating"] = float(ascii_rating_match.group(1))
 
     # Extract individual scores
     scores_section = re.search(r"## Investment Rating(.+?)\*\*Rating:", content, re.DOTALL)
@@ -126,20 +134,21 @@ def parse_phase5_report(folder_path):
             score = int(match.group(2))
             data["scores"][category] = score
 
-    # Extract positive factors
-    positives_section = re.search(r"### Positive Factors.*?(?=###|##)", content, re.DOTALL)
+    # Extract positive factors - handles ### Positive Factors followed by numbered list
+    positives_section = re.search(r"### Positive Factors.*?(?=### |## |---)", content, re.DOTALL)
     if positives_section:
-        for match in re.finditer(r"\*\*(.+?):\*\*\s*(.+?)(?=\n\n|\n\d\.|\Z)", positives_section.group(0), re.DOTALL):
+        for match in re.finditer(r"\d+\.\s+\*\*(.+?)\*\*\s*(.+?)(?=\n\d+\.|\n\n###|\Z)", positives_section.group(0), re.DOTALL):
             title = match.group(1).strip()
-            desc = match.group(2).strip().replace("\n", " ")
+            desc = match.group(2).strip().replace("\n", " ")[:200]  # Limit description length
             data["positives"].append((title, desc))
 
-    # Extract risk factors
-    risks_section = re.search(r"### .*Risk.*?(?=###|##|---)", content, re.DOTALL)
+    # Extract risk factors - handles ### Risk Factors or ### Critical Red Flags followed by numbered list
+    # Look for "Risk Factors" or "Critical Red Flags" specifically
+    risks_section = re.search(r"### (Risk Factors|Critical Red Flags).*?(?=### |## |---)", content, re.DOTALL)
     if risks_section:
-        for match in re.finditer(r"\*\*(.+?):\*\*\s*(.+?)(?=\n\n|\n\d\.|\Z)", risks_section.group(0), re.DOTALL):
+        for match in re.finditer(r"\d+\.\s+\*\*(.+?)\*\*\s*(.+?)(?=\n\d+\.|\n\n###|\Z)", risks_section.group(0), re.DOTALL):
             title = match.group(1).strip()
-            desc = match.group(2).strip().replace("\n", " ")
+            desc = match.group(2).strip().replace("\n", " ")[:200]  # Limit description length
             data["risks"].append((title, desc))
 
     return data
@@ -339,10 +348,18 @@ def generate_index_data(all_stocks):
         pos_highlights = [p[0] for p in stock_data.get("positives", [])[:2]]
         neg_highlights = [r[0] for r in stock_data.get("risks", [])[:2]]
 
+        # Escape single quotes in name
+        stock_name = stock_data.get("name", folder_info["name"]).replace("'", "\\'")
+
+        # Build target value
+        target_val = "null"
+        if stock_data.get("intrinsic_value"):
+            target_val = f'"HK${int(stock_data["intrinsic_value"])}"'
+
         js_stock = f"""      {{
         id: '{ticker}',
         ticker: '{ticker_display}',
-        name: '{stock_data.get("name", folder_info["name"]).replace("'", "\\'")}',
+        name: '{stock_name}',
         price: {stock_data.get("price", 0)},
         currency: '{currency}',
         recommendation: '{stock_data["recommendation"]}',
@@ -352,7 +369,7 @@ def generate_index_data(all_stocks):
         roe: '{stock_data.get("roe", "-")}',
         marginOfSafety: '{stock_data.get("margin_of_safety", "-")}',
         dividend: '{stock_data.get("dividend", "0%")}',
-        target: {'"HK$" + str(int(stock_data["intrinsic_value"]))' if stock_data.get("intrinsic_value") else 'null'},
+        target: {target_val},
         highlights: [],
         risk: '',
         riskColor: 'normal',

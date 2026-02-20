@@ -4,6 +4,7 @@
   "chinese_name": "招商局中国基金",
   "start_date": "2026-02-20",
   "completion_date": "2026-02-20",
+  "last_verified": "2026-02-20",
   "phases": {
     "phase1": {"status": "completed", "completed_date": "2026-02-20", "file": "phase1_data_collection.md"},
     "phase2": {"status": "completed", "completed_date": "2026-02-20", "file": "phase2_fundamental_analysis.md"},
@@ -12,13 +13,35 @@
     "phase5": {"status": "completed", "completed_date": "2026-02-20", "file": "phase5_final_report.md"}
   },
   "recommendation": "SPECULATIVE BUY",
-  "rating": "6.6/10 - Deep Value Play",
-  "intrinsic_value_hkd": 26.14,
-  "current_price_hkd": 15.58,
-  "nav_per_share_hkd": 34.48,
-  "price_to_nav": 0.45,
-  "discount_to_nav": "55%",
-  "margin_of_safety": "40.4%",
+  "rating": "7.1/10 - Deep Value Play (Verified)",
+  "intrinsic_value_hkd": 30,
+  "current_price_hkd": 15.04,
+  "nav_per_share_hkd": 40.2,
+  "price_to_nav": 0.37,
+  "discount_to_nav": "63%",
+  "margin_of_safety": "~50%",
+  "data_sources": {
+    "primary": {
+      "company_ir": "http://www.cmcdi.com.hk",
+      "exchange_filings": "HKEX 00133 filings"
+    },
+    "secondary": {
+      "financial_portals": ["东方财富", "雪球", "搜狐财经"]
+    },
+    "verification_status": {
+      "price": "verified",
+      "nav_per_share": "verified",
+      "price_to_nav": "verified",
+      "dividend_yield": "verified",
+      "roe": "verified"
+    },
+    "discrepancies_found": [
+      "NAV updated from HK$34.48 to ~HK$40.2 (June 2025)",
+      "P/NAV improved from 0.45x to 0.37x",
+      "Dividend yield confirmed at 7-8%"
+    ],
+    "verification_date": "2026-02-20"
+  },
   "key_risks": [
     "NAV discount persistence (value trap risk)",
     "Management fee uncertainty (only interim reduction)",
@@ -27,11 +50,12 @@
     "Illiquidity"
   ],
   "positive_factors": [
-    "Extreme discount to NAV (55%)",
+    "Extreme discount to NAV (63%)",
     "Quality holdings (CMB, UnionPay, iFlytek)",
     "Historic governance victory (fee reduction)",
-    "4-8% dividend yield",
-    "40% margin of safety",
+    "7-8% dividend yield (verified)",
+    "~50% margin of safety",
+    "H1 2025 profit +135% YoY",
     "Multiple catalysts (IPOs, fee reduction, privatization)"
   ],
   "suitable_for": "Active investors who can monitor quarterly, 3-5 year horizon",

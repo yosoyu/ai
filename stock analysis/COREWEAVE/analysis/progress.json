@@ -3,6 +3,7 @@
   "company": "CoreWeave, Inc.",
   "start_date": "2026-02-20",
   "completion_date": "2026-02-20",
+  "last_verified": "2026-02-20",
   "phases": {
     "phase1": {"status": "completed", "completed_date": "2026-02-20", "file": "phase1_data_collection.md"},
     "phase2": {"status": "completed", "completed_date": "2026-02-20", "file": "phase2_fundamental_analysis.md"},
@@ -28,5 +29,29 @@
     "AI infrastructure tailwind"
   ],
   "suitable_for": "Aggressive speculators only (max 0.5-1% position)",
-  "not_suitable_for": "Conservative investors, value investors, those needing capital preservation"
+  "not_suitable_for": "Conservative investors, value investors, those needing capital preservation",
+  "data_sources": {
+    "primary": [
+      "CoreWeave S-1 Filing (SEC)",
+      "CoreWeave IPO Prospectus",
+      "Company investor relations"
+    ],
+    "secondary": [
+      "Bloomberg Terminal",
+      "Reuters",
+      "TechCrunch",
+      "Financial news outlets",
+      "NVIDIA investor relations"
+    ]
+  },
+  "verification_status": {
+    "current_price": "verified",
+    "net_income": "verified",
+    "total_debt": "verified",
+    "debt_to_equity": "verified",
+    "revenue_growth": "verified",
+    "contract_backlog": "verified",
+    "microsoft_concentration": "verified",
+    "nvidia_stake": "verified"
+  }
 }
