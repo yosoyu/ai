@@ -356,9 +356,23 @@
     }
 
     .card-link {
-      margin-top: 12px;
       font-size: 12px;
       color: var(--accent-blue);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .data-refreshed {
+      font-size: 10px;
+      color: var(--text-muted);
       font-family: 'JetBrains Mono', monospace;
     }
 
@@ -615,7 +629,8 @@
         risk: 'AI Competition',
         riskColor: 'gold',
         positiveHighlights: ['WeChat Ecosystem', '30% Margin', 'HK$100B+ Buybacks'],
-        negativeHighlights: ['AI Competition']
+        negativeHighlights: ['AI Competition'],
+        lastUpdated: '2026-02-16'
       },
       {
         id: 'alibaba',
@@ -635,7 +650,8 @@
         risk: 'Competition',
         riskColor: 'gold',
         positiveHighlights: ['Cloud Leader', 'Buybacks'],
-        negativeHighlights: ['PDD Competition', 'Slow Growth']
+        negativeHighlights: ['PDD Competition', 'Slow Growth'],
+        lastUpdated: '2026-02-18'
       },
       {
         id: 'kerry',
@@ -655,7 +671,8 @@
         risk: 'Cyclical',
         riskColor: 'normal',
         positiveHighlights: ['P/B 0.29x', '6.5% Yield', 'Kuok Family'],
-        negativeHighlights: []
+        negativeHighlights: [],
+        lastUpdated: '2026-02-18'
       },
       {
         id: 'cmcdi',
@@ -675,7 +692,8 @@
         risk: 'Fee Drag',
         riskColor: 'gold',
         positiveHighlights: ['P/NAV 0.35x', 'NAV HK$42.96', 'H1 2025 +135%'],
-        negativeHighlights: ['Value Trap Risk']
+        negativeHighlights: ['Value Trap Risk'],
+        lastUpdated: '2026-02-16'
       },
       {
         id: 'trip',
@@ -695,7 +713,8 @@
         risk: 'Antitrust',
         riskColor: 'avoid',
         positiveHighlights: ['High Margin', 'Market Leader'],
-        negativeHighlights: ['Antitrust Probe', 'Low ROE']
+        negativeHighlights: ['Antitrust Probe', 'Low ROE'],
+        lastUpdated: '2026-02-16'
       },
       {
         id: 'meituan',
@@ -715,7 +734,8 @@
         risk: 'Competition',
         riskColor: 'avoid',
         positiveHighlights: ['HK$141B Cash'],
-        negativeHighlights: ['Price War', '-RMB240B Loss']
+        negativeHighlights: ['Price War', '-RMB240B Loss'],
+        lastUpdated: '2026-02-16'
       },
       {
         id: 'golden',
@@ -735,7 +755,8 @@
         risk: 'Governance',
         riskColor: 'avoid',
         positiveHighlights: ['21.5% ROE'],
-        negativeHighlights: ['Governance Risk', '126% Payout']
+        negativeHighlights: ['Governance Risk', '126% Payout'],
+        lastUpdated: '2026-02-20'
       },
       {
         id: 'coreweave',
@@ -755,7 +776,8 @@
         risk: 'Liquidity',
         riskColor: 'avoid',
         positiveHighlights: ['+276% Growth'],
-        negativeHighlights: ['485% D/E', '-$825M Net Income', '3-4mo Runway']
+        negativeHighlights: ['485% D/E', '-$825M Net Income', '3-4mo Runway'],
+        lastUpdated: '2026-02-20'
       },
       {
         id: 'chinatelecom',
@@ -775,7 +797,8 @@
         risk: 'Slow Growth',
         riskColor: 'normal',
         positiveHighlights: ['~5% Yield', 'SOE Backing'],
-        negativeHighlights: ['Flat Revenue', 'Lower Margin']
+        negativeHighlights: ['Flat Revenue', 'Lower Margin'],
+        lastUpdated: '2026-02-18'
       },
       {
         id: 'chinamobile',
@@ -795,7 +818,8 @@
         risk: 'Slow Growth',
         riskColor: 'normal',
         positiveHighlights: ['~5% Yield', 'Defensive', 'Net Cash'],
-        negativeHighlights: ['2.5% Revenue Growth']
+        negativeHighlights: ['2.5% Revenue Growth'],
+        lastUpdated: '2026-02-18'
       }
     ];
 
@@ -847,7 +871,10 @@
             </div>
           </div>
           <div class="card-highlights">${highlightTags}</div>
-          <div class="card-link">View Details →</div>
+          <div class="card-footer">
+            <span class="data-refreshed">📅 ${stock.lastUpdated || '2026-02-20'}</span>
+            <span class="card-link">View Details →</span>
+          </div>
         </div>
       `;
     }
