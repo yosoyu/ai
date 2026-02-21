@@ -515,7 +515,7 @@
         <div class="header-meta">
           <div class="live-indicator">
             <div class="live-dot"></div>
-            <span>10 Stocks Analyzed</span>
+            <span>16 Stocks Analyzed</span>
           </div>
           <div class="timestamp" id="last-updated">Loading...</div>
         </div>
@@ -524,8 +524,8 @@
 
     <nav class="nav-tabs">
       <button class="nav-tab active" data-tab="overview">Overview</button>
-      <button class="nav-tab" data-tab="buy">Buy (3)</button>
-      <button class="nav-tab" data-tab="hold">Hold (2)</button>
+      <button class="nav-tab" data-tab="buy">Buy (5)</button>
+      <button class="nav-tab" data-tab="hold">Hold (8)</button>
       <button class="nav-tab" data-tab="avoid">Avoid (3)</button>
     </nav>
 
@@ -575,7 +575,7 @@
     <!-- Buy Section -->
     <section id="buy" class="analysis-section">
       <div class="section-header">
-        <h2>Buy Recommendations (3 Stocks)</h2>
+        <h2>Buy Recommendations (5 Stocks)</h2>
       </div>
       <div class="stock-cards" id="buy-grid"></div>
     </section>
@@ -583,7 +583,7 @@
     <!-- Hold Section -->
     <section id="hold" class="analysis-section">
       <div class="section-header">
-        <h2>Hold/Speculative (2 Stocks)</h2>
+        <h2>Hold/Speculative (8 Stocks)</h2>
       </div>
       <div class="stock-cards" id="hold-grid"></div>
     </section>
@@ -603,7 +603,7 @@
       <div class="footer-meta">
         <span>Framework v2.0</span>
         <span id="footer-date">Loading...</span>
-        <span>10 Stocks Analyzed</span>
+        <span>16 Stocks Analyzed</span>
       </div>
     </footer>
   </div>
@@ -820,6 +820,132 @@
         positiveHighlights: ['~5% Yield', 'Defensive', 'Net Cash'],
         negativeHighlights: ['2.5% Revenue Growth'],
         lastUpdated: '2026-02-18'
+      },
+      {
+        id: 'moutai',
+        ticker: '600519.CN',
+        name: 'Kweichow Moutai',
+        price: 1460,
+        currency: '¥',
+        recommendation: 'hold',
+        rating: 8.6,
+        pe: 20,
+        pb: 7.24,
+        roe: '36%',
+        marginOfSafety: '25-35%',
+        dividend: '3.5-4%',
+        target: '¥1,650-2,100',
+        highlights: ['91% Gross Margin', '¥593B Cash', 'Zero Debt'],
+        risk: 'Govt Austerity',
+        riskColor: 'gold',
+        positiveHighlights: ['Fortress Balance Sheet', 'Brand Moat', 'Store of Value'],
+        negativeHighlights: ['Austerity Pressure', 'Demographic Challenge'],
+        lastUpdated: '2026-02-21'
+      },
+      {
+        id: 'gree',
+        ticker: '000651.CN',
+        name: 'Gree Electric',
+        price: 40,
+        currency: '¥',
+        recommendation: 'hold',
+        rating: 7.4,
+        pe: 6.8,
+        pb: 1.5,
+        roe: '23%',
+        marginOfSafety: '38%',
+        dividend: '7.4%',
+        target: '¥52-53',
+        highlights: ['PE 1.14% Tile', '7.4% Yield', '¥1T Cash'],
+        risk: 'Real Estate',
+        riskColor: 'avoid',
+        positiveHighlights: ['Extreme Value', 'Vertical Integration', 'High Yield'],
+        negativeHighlights: ['Market Share Loss', 'Key Person Risk'],
+        lastUpdated: '2026-02-21'
+      },
+      {
+        id: 'gds',
+        ticker: '9698.HK',
+        name: 'GDS Holdings',
+        price: 38,
+        currency: 'HK$',
+        recommendation: 'hold',
+        rating: 6.8,
+        pe: null,
+        pb: 1.91,
+        roe: '-',
+        marginOfSafety: '-',
+        dividend: '0%',
+        target: 'HK$45-46',
+        highlights: ['AI Data Center', 'First REIT', '65% AI Bookings'],
+        risk: 'High Leverage',
+        riskColor: 'avoid',
+        positiveHighlights: ['AI Tailwinds', 'REIT Premium'],
+        negativeHighlights: ['6.0x Net Debt/EBITDA', 'Alibaba 30%+'],
+        lastUpdated: '2026-02-21'
+      },
+      {
+        id: 'vnet',
+        ticker: 'VNET',
+        name: '21Vianet Group',
+        price: 11.5,
+        currency: '$',
+        recommendation: 'hold',
+        rating: 6.6,
+        pe: null,
+        pb: 1.2,
+        roe: '2.9%',
+        marginOfSafety: '-',
+        dividend: '0%',
+        target: '$11.79-15.25',
+        highlights: ['Wholesale +82.7%', 'Green Energy', '10GW Target'],
+        risk: 'High Leverage',
+        riskColor: 'avoid',
+        positiveHighlights: ['50% Discount to Peers', 'Green Power Cost'],
+        negativeHighlights: ['359% D/E', 'Negative FCF'],
+        lastUpdated: '2026-02-21'
+      },
+      {
+        id: 'kingsoftcloud',
+        ticker: '3896.HK',
+        name: 'Kingsoft Cloud',
+        price: 7.6,
+        currency: 'HK$',
+        recommendation: 'hold',
+        rating: 6.2,
+        pe: null,
+        pb: 3.4,
+        roe: '-',
+        marginOfSafety: '-',
+        dividend: '0%',
+        target: 'US$18.34',
+        highlights: ['First Profit Q3', '+500% AI YoY', 'Xiaomi Ecosystem'],
+        risk: 'Competition',
+        riskColor: 'avoid',
+        positiveHighlights: ['Profit Inflection', 'Xiaomi Moat'],
+        negativeHighlights: ['3.2% Market Share', 'High Debt'],
+        lastUpdated: '2026-02-21'
+      },
+      {
+        id: 'kingsoft',
+        ticker: '3888.HK',
+        name: 'Kingsoft Corp',
+        price: 29.5,
+        currency: 'HK$',
+        recommendation: 'buy',
+        rating: 7.4,
+        pe: 23,
+        pb: 1.4,
+        roe: '8%',
+        marginOfSafety: '66%',
+        dividend: '0.55%',
+        target: 'HK$45-51',
+        highlights: ['66% SOTP Discount', 'WPS AI +230%', '¥22.8B Cash'],
+        risk: 'Gaming -47%',
+        riskColor: 'gold',
+        positiveHighlights: ['SOTP 66% Upside', 'Active Buybacks', 'WPS AI Growth'],
+        negativeHighlights: ['Gaming Collapse', 'KC Provisions'],
+        lastUpdated: '2026-02-21'
       }
     ];
 
@@ -836,12 +962,20 @@
         ...stock.negativeHighlights.map(h => `<span class="highlight-tag negative">${h}</span>`)
       ].join('');
 
-      // Link to subpage - extract ticker number (e.g., "700" from "700.HK")
-      const tickerNum = stock.ticker.replace('.HK', '');
+      // Link to subpage - extract ticker number (e.g., "700" from "700.HK", "600519" from "600519.CN")
+      const tickerNum = stock.ticker.replace(/\.(HK|CN|US)$/, '');
       const subpage = `stocks/${tickerNum}.html`;
 
       // Yahoo Finance link format
-      const yahooTicker = stock.ticker === 'CRWV' ? 'CRWV' : '0' + tickerNum + '.HK';
+      let yahooTicker;
+      if (stock.ticker === 'CRWV' || stock.ticker === 'VNET') {
+        yahooTicker = stock.ticker;
+      } else if (stock.ticker.endsWith('.CN')) {
+        // Chinese A-shares: Shanghai (.SS) or Shenzhen (.SZ)
+        yahooTicker = tickerNum + (tickerNum.startsWith('6') ? '.SS' : '.SZ');
+      } else {
+        yahooTicker = '0' + tickerNum + '.HK';
+      }
 
       return `
         <div class="stock-card ${recClass}" onclick="window.location.href='${subpage}'">
